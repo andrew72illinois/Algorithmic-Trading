@@ -1,0 +1,5 @@
+# Ignore secrets.py as it holds API keys
+secrets.py
+# Ignore algovenv as it's just a virtual environment
+/algovenv
+
