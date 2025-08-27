@@ -2,4 +2,5 @@
 personal.py
 # Ignore algovenv as it's just a virtual environment
 /algovenv
+/__pychache__
 
