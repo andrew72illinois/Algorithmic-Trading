@@ -1,6 +1,30 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
 # Ignore secrets.py as it holds API keys
 personal.py
+config.py
+secrets.py
+
 # Ignore algovenv as it's just a virtual environment
 /algovenv
-__pychache__/
+
+# Environment variables
+.env
+*.env
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
 
