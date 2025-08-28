@@ -1,4 +1,5 @@
 import pandas as pd
+import pandas_ta as ta
 import pytz
 from alpaca.data.historical import StockHistoricalDataClient
 from alpaca.data.requests import StockBarsRequest
@@ -76,3 +77,14 @@ def classify_market_status(dt: pd.Timestamp) -> str:
     else:
         return "closed"
 
+def filter_regular_hours(data_: pd.DataFrame) -> pd.DataFrame: 
+    return data_[data_["market_status"] == "regular"]
+
+def add_technical_indicators(data_: pd.DataFrame) -> pd.DataFrame:
+    data_ = data_.sort_index()
+    data_['ATR'] = data_.ta.atr(length=20) # Average True Range for 20 candlesticks
+    data_['RSI'] = data_.ta.rsi() # Relative Strength Index
+    data_['MA40'] = data_.ta.sma(length=40) # Moving Average for 40 candlesticks
+    data_['MA80'] = data_.ta.sma(length=80) # Moving Average for 80 candlesticks
+    data_['MA160'] = data_.ta.sma(length=160) # Moving Average for 160 candlesticks
+    return data_

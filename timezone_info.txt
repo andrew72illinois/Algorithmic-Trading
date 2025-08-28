@@ -1,0 +1,7 @@
+Author's timezone is CT
+New York Exchange is in ET
+Alpaca uses datetime with UTC
+
+UTC base
+ET is UTC - 4
+CT is UTC - 5
