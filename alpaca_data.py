@@ -88,3 +88,15 @@ def add_technical_indicators(data_: pd.DataFrame) -> pd.DataFrame:
     data_['MA80'] = data_.ta.sma(length=80) # Moving Average for 80 candlesticks
     data_['MA160'] = data_.ta.sma(length=160) # Moving Average for 160 candlesticks
     return data_
+
+# For purely testing purposes
+# New column for classification
+# 1 for higher than previous
+# -1 for lower than previous
+def classify_price_gap(data_: pd.DataFrame) -> pd.DataFrame:
+    data_ = data_.copy()
+    data_['price_gap'] = data_['open'] - data_['close'].shift(1)
+    data_['Higher/Lower'] = data_['price_gap'].apply(
+        lambda x: -1 if x < 0 else (1 if x > 0 else 0)
+    )
+    return data_
