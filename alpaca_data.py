@@ -25,7 +25,7 @@ def retrieve_stock_bars(client_: StockHistoricalDataClient, symbol_: str, time_i
     utc = pytz.UTC
     # Get current time and calculate start and end time for StockBarsRequest by calculating ET then converting to UTC
     now_et = datetime.now(eastern) 
-    start_et = (now_et - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    start_et = (now_et - timedelta(days=3)).replace(hour=0, minute=0, second=0, microsecond=0)
     end_et = (now_et + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     start_utc = start_et.astimezone(utc)
     end_utc = end_et.astimezone(utc)
@@ -89,14 +89,21 @@ def add_technical_indicators(data_: pd.DataFrame) -> pd.DataFrame:
     data_['MA160'] = data_.ta.sma(length=160) # Moving Average for 160 candlesticks
     return data_
 
-# For purely testing purposes
-# New column for classification
-# 1 for higher than previous
-# -1 for lower than previous
+# Creates target variable for ML prediction
+# New column "Higher/Lower" indicates whether the NEXT candlestick's open price
+# will be higher (1), lower (-1), or same (0) than the CURRENT close price
+# Note: Data is sorted chronologically (oldest first) to ensure proper time sequence
 def classify_price_gap(data_: pd.DataFrame) -> pd.DataFrame:
     data_ = data_.copy()
-    data_['price_gap'] = data_['open'] - data_['close'].shift(1)
-    data_['Higher/Lower'] = data_['price_gap'].apply(
+    # Sort by timestamp to ensure chronological order (oldest first)
+    data_ = data_.sort_index()
+    
+    # Calculate whether the NEXT candlestick's open is higher/lower than CURRENT close
+    # This creates a target variable for ML prediction
+    data_['next_open_vs_current_close'] = data_['open'].shift(-1) - data_['close']
+    data_['Higher/Lower'] = data_['next_open_vs_current_close'].apply(
         lambda x: -1 if x < 0 else (1 if x > 0 else 0)
     )
+    # Drop the last row since we can't predict the next candlestick for it
+    # data_ = data_.dropna()
     return data_
