@@ -25,7 +25,7 @@ def retrieve_stock_bars(client_: StockHistoricalDataClient, symbol_: str, time_i
     utc = pytz.UTC
     # Get current time and calculate start and end time for StockBarsRequest by calculating ET then converting to UTC
     now_et = datetime.now(eastern) 
-    start_et = (now_et - timedelta(days=3)).replace(hour=0, minute=0, second=0, microsecond=0)
+    start_et = (now_et - timedelta(days=4)).replace(hour=0, minute=0, second=0, microsecond=0)
     end_et = (now_et + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
     start_utc = start_et.astimezone(utc)
     end_utc = end_et.astimezone(utc)

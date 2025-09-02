@@ -27,4 +27,5 @@ secrets.py
 .DS_Store
 Thumbs.db
 
-
+# Trained models
+knn_model1.pkl
