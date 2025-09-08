@@ -53,13 +53,14 @@ def main() -> None:
         stock_data_frame = data_frame_from_stock_bars(data_ = stock_bars)
         filtered_data_frame = filter_regular_hours(data_= stock_data_frame)
         technical_data_frame = add_technical_indicators(data_=filtered_data_frame.copy())
-        classified_data_frame = classify_price_gap(data_=technical_data_frame)
+        # classified_data_frame = classify_price_gap(data_=technical_data_frame)
         
         if model is not None:
              # Get prediction for the latest candlestick
             prediction = predict_latest_candlestick(model, technical_data_frame)
              
              # Get current price for limit orders
+            print(technical_data_frame.iloc[-1])
             current_price = technical_data_frame['close'].iloc[-1]
              
             if prediction == 1:
@@ -67,7 +68,7 @@ def main() -> None:
                  
                 # Example: Place a market buy order for 1 share
                 # Uncomment the line below to actually place the order
-                # order_result = place_market_buy_order(alpaca_client, "TSLA", 1)
+                order_result = place_market_buy_order(alpaca_client, "TSLA", 1)
                  
                 # Example: Place a limit buy order slightly below current price
                 # limit_price = current_price * 0.995  # 0.5% below current price
@@ -86,7 +87,7 @@ def main() -> None:
                      
                     # Example: Place a market sell order for all TSLA shares
                     # Uncomment the line below to actually place the order
-                    # order_result = place_market_sell_order(alpaca_client, "TSLA", tsla_qty)
+                    order_result = place_market_sell_order(alpaca_client, "TSLA", tsla_qty)
                      
                     # Example: Place a limit sell order slightly above current price
                     # limit_price = current_price * 1.005  # 0.5% above current price
